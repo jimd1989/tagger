@@ -1,0 +1,80 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: f717dec967e37ca98e0304d40d7cb5e631b08a86af86a31e82d14ad6cc161708
+
+name:           tagger
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/tagger#readme>
+homepage:       https://github.com/githubuser/tagger#readme
+bug-reports:    https://github.com/githubuser/tagger/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2021 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/tagger
+
+library
+  exposed-modules:
+      EyeD3Tag
+      FormatString
+      Helpers
+      Matcher
+  other-modules:
+      Paths_tagger
+  hs-source-dirs:
+      src
+  default-extensions: FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , parsec
+    , protolude
+    , text
+  default-language: Haskell2010
+
+executable tagger-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_tagger
+  hs-source-dirs:
+      app
+  default-extensions: FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , parsec
+    , protolude
+    , tagger
+    , text
+  default-language: Haskell2010
+
+test-suite tagger-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_tagger
+  hs-source-dirs:
+      test
+  default-extensions: FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , parsec
+    , protolude
+    , tagger
+    , text
+  default-language: Haskell2010
