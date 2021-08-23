@@ -4,6 +4,7 @@ module EyeD3Tag where
 -- Each of its command-line flags has a corresponding instance in EyeD3Tag.
 
 import Prelude (Show, String, ($), show)
+import Data.Semigroup (Semigroup(..))
 import Helpers ((◇))
 
 wrap ∷ String → String
@@ -17,6 +18,8 @@ data EyeD3Tag = Artist       String
               | TrackNum     String
               | Title        String
               | Year         String
+              | All          String
+              | Empty
 
 instance Show EyeD3Tag where
   show (Artist      α) = "-a " ◇ (show $ wrap α)
@@ -27,6 +30,11 @@ instance Show EyeD3Tag where
   show (TrackNum    α) = "-n " ◇ (show α)
   show (Title       α) = "-t " ◇ (show $ wrap α)
   show (Year        α) = "-Y " ◇ (show α)
+  show (All         α) = show α
+  show (Empty        ) = ""
+
+instance Semigroup EyeD3Tag where
+  α <> ω = All (show α ◇ show ω)
 
 -- A newtype describing the constructor of an EyeD3Tag. Sits inside a Matcher
 -- and is invoked on each filename to parse text into a proper ID3 tag.
