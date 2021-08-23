@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: faeddcfa4c788a8540cda451b832294ff939f5b1bbcefc7a4d10d7fb17c9f93b
+-- hash: ffc4185f2ab615d96518e720c9d5842906a4ada99ee0f7d2bd8c23741c7071c2
 
 name:           tagger
 version:        0.1.0.0
@@ -30,7 +30,6 @@ library
       EyeD3Tag
       FormatString
       Helpers
-      Matcher
   other-modules:
       Paths_tagger
   hs-source-dirs:
