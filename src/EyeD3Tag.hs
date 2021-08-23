@@ -32,3 +32,6 @@ newtype Tagger = Tagger { runTagger ∷ String → EyeD3Tag }
 
 instance Show Tagger where
   show α = show $ (runTagger α) "x"
+
+getTag ∷ Tagger → String → String
+getTag f α = show $ (runTagger f) α
