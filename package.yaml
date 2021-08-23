@@ -41,6 +41,7 @@ executables:
     - tagger
 
 default-extensions:
+- ApplicativeDo
 - FlexibleContexts
 - GeneralizedNewtypeDeriving
 - NamedFieldPuns

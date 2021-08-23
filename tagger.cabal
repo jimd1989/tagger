@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f717dec967e37ca98e0304d40d7cb5e631b08a86af86a31e82d14ad6cc161708
+-- hash: faeddcfa4c788a8540cda451b832294ff939f5b1bbcefc7a4d10d7fb17c9f93b
 
 name:           tagger
 version:        0.1.0.0
@@ -35,7 +35,7 @@ library
       Paths_tagger
   hs-source-dirs:
       src
-  default-extensions: FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
+  default-extensions: ApplicativeDo FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
   build-depends:
       base >=4.7 && <5
     , containers
@@ -50,7 +50,7 @@ executable tagger-exe
       Paths_tagger
   hs-source-dirs:
       app
-  default-extensions: FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
+  default-extensions: ApplicativeDo FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
@@ -68,7 +68,7 @@ test-suite tagger-test
       Paths_tagger
   hs-source-dirs:
       test
-  default-extensions: FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
+  default-extensions: ApplicativeDo FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5

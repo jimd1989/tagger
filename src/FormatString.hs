@@ -1,69 +1,61 @@
-module FormatString where
+module FormatString (formatString) where
 
-import Prelude (Char, Eq, Int, Show, String, (*>), pure)
-import Control.Applicative ((<|>))
+-- Takes a string representing the tag format of the filenames to be tagged.
+-- Example: "{d}-{n}. {a} - {t}.mp3"
+-- Returns a list of Matchers to handle the tag parsing of each filename.
+
+import Prelude (Char, Eq, Int, String, (.), ($), (*>), (==), (>>=))
+import Control.Applicative ((<|>), liftA2, pure)
+import Data.Bitraversable (bisequence)
 import Data.Functor (($>))
-import Data.List (length)
+import Data.List (filter, length, zipWith)
 import Data.Maybe (Maybe(..))
-import Text.Parsec (ParsecT, Stream, eof)
+import Data.Tuple (uncurry)
+import Text.Parsec (ParsecT, Stream, eof, many1, manyTill, try)
 import Text.Parsec.Char (anyChar, char, oneOf)
-import Text.Parsec.Combinator (between, choice, lookAhead, optionMaybe, manyTill)
+import Text.Parsec.Combinator (between, choice, lookAhead, optionMaybe)
 import EyeD3Tag (EyeD3Tag(..), Tagger(..))
-import Helpers ((⊙), (●))
+import Helpers ((⊙))
+import Matcher (Delimeter(..), Matcher(..))
 
-example ∷ String
-example = "{d}-{n}. {a} - {t}.mp3" 
+tagger ∷ Stream s m Char ⇒ Char → (String → EyeD3Tag) → ParsecT s u m Tagger
+tagger α ω = char α $> Tagger ω
 
-newtype Delimeter = Delimeter { getDelimeter ∷ Maybe Char }
-  deriving (Eq, Show)
-
--- Needs some sort of lookAhead on delimeter count
-data Matcher = Text Tagger Delimeter
-             | Num Tagger Delimeter
-  deriving Show
+nextChar ∷ Stream s m Char ⇒ ParsecT s u m Char
+nextChar = anyChar *> anyChar
 
 delimeter ∷ Stream s m Char ⇒ ParsecT s u m Delimeter
-delimeter = Delimeter ⊙ optionMaybe anyChar
+delimeter = Delimeter ⊙ optionMaybe (try $ lookAhead nextChar)
 
-artist ∷ Stream s m Char ⇒ ParsecT s u m Tagger
-artist = char 'a' $> Tagger Artist
-
-albumArtist ∷ Stream s m Char ⇒ ParsecT s u m Tagger
-albumArtist = char 'b' $> Tagger AlbumArtist
-
-album ∷ Stream s m Char ⇒ ParsecT s u m Tagger
-album = char 'A' $> Tagger Album
-
-genre ∷ Stream s m Char ⇒ ParsecT s u m Tagger
-genre = char 't' $> Tagger Genre
-
-title ∷ Stream s m Char ⇒ ParsecT s u m Tagger
-title = char 'G' $> Tagger Title
-
-textTag ∷ Stream s m Char ⇒ ParsecT s u m Matcher
-textTag = Text ⊙ (check *> choices) ● delimeter
-  where check   = lookAhead (oneOf "abAtG")
-        choices = choice [artist, albumArtist, album, genre, title]
-
-discNum ∷ Stream s m Char ⇒ ParsecT s u m Tagger
-discNum = char 'd' $> Tagger DiscNum
-
-trackNum ∷ Stream s m Char ⇒ ParsecT s u m Tagger
-trackNum = char 'n' $> Tagger TrackNum
-
-year ∷ Stream s m Char ⇒ ParsecT s u m Tagger
-year = char 'Y' $> Tagger Year
-
--- WIP
 delimeterCount ∷ Stream s m Char ⇒ Delimeter → ParsecT s u m Int
 delimeterCount α = case (getDelimeter α) of
-  (Just   ω) → length ⊙ manyTill anyChar eof -- filter here
-  (Nothing ) → pure 0
+  (Just  ω) → (length . (filter (== ω))) ⊙ lookAhead (manyTill anyChar eof)
+  (Nothing) → pure 0
+
+delimeterAndCount ∷ Stream s m Char ⇒ ParsecT s u m (Delimeter, Int)
+delimeterAndCount = bisequence (delimeter, delimeter >>= delimeterCount)
+
+textTag ∷ Stream s m Char ⇒ ParsecT s u m Matcher
+textTag = liftA2 (uncurry . Until) (check *> choices) delimeterAndCount
+  where chars        = "abAGt"
+        constructors = [Artist, AlbumArtist, Album, Genre, Title]
+        check        = lookAhead $ oneOf chars
+        choices      = choice $ zipWith tagger chars constructors
 
 numTag ∷ Stream s m Char ⇒ ParsecT s u m Matcher
-numTag = Num ⊙ (check *> choices) ● delimeter
-  where check   = lookAhead (oneOf "dnY")
-        choices = choice [discNum, trackNum, year]
+numTag = liftA2 Number (check *> choices) delimeter
+  where chars        = "dnY"
+        constructors = [DiscNum, TrackNum, Year]
+        check        = lookAhead $ oneOf chars
+        choices      = choice $ zipWith tagger chars constructors
 
 tag ∷ Stream s m Char ⇒ ParsecT s u m Matcher
-tag = between (char '{') (char '}') (textTag <|> numTag)
+tag = between (char '{') (char '}') $ numTag <|> textTag
+
+exactText ∷ Stream s m Char ⇒ ParsecT s u m Matcher
+exactText = ExactText ⊙ (openBracket <|> end)
+  where openBracket = try $ manyTill anyChar (lookAhead $ char '{')
+        end         = many1 anyChar
+
+formatString ∷ Stream s m Char ⇒ ParsecT s u m [Matcher]
+formatString = many1 $ tag <|> exactText
