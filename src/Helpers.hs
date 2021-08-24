@@ -1,8 +1,13 @@
-module Helpers ((◁), (◀), (⊙), (●), (◇), (≠), fork) where
+module Helpers ((◁), (◀), (⊙), (●), (◇), (≠), fork, head') where
 
-import Prelude (Bool, (.), (/=), (<>), fmap)
+import Prelude (Bool, String, (.), (/=), (<>), fmap)
 import Control.Applicative (Alternative, Applicative, (<*>), liftA2)
 import Control.Monad ((<=<))
+import Data.Either (Either(..))
+
+head' ∷ [a] → Either String a
+head'   []  = Left "expexted non-empty list"
+head' (α:ω) = Right α
 
 fork :: Applicative f ⇒ (a → b → c) → f a → f b → f c
 fork = liftA2
