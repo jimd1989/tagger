@@ -11,7 +11,7 @@ import Data.Functor (($>))
 import Data.List (filter, foldr1, length, intercalate, zipWith)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (uncurry)
-import Text.Parsec (ParsecT, Stream, eof, many1, manyTill, try)
+import Text.Parsec (ParsecT, Stream, many1, manyTill, try)
 import Text.Parsec.Char (anyChar, char, digit, oneOf, string)
 import Text.Parsec.Combinator (between, choice, count, lookAhead, optionMaybe)
 import EyeD3Tag (EyeD3Tag(..), Tagger(..), getTag)
@@ -24,17 +24,6 @@ newtype Delimeter = Delimeter { getDelimeter ∷ Maybe Char }
 nextChar ∷ Stream s m Char ⇒ ParsecT s u m Char
 nextChar = anyChar *> anyChar
 
-delimeter ∷ Stream s m Char ⇒ ParsecT s u m Delimeter
-delimeter = Delimeter ⊙ optionMaybe (try $ lookAhead nextChar)
-
-delimeterCount ∷ Stream s m Char ⇒ Delimeter → ParsecT s u m Int
-delimeterCount α = case (getDelimeter α) of
-  (Just  ω) → (length . (filter (== ω))) ⊙ lookAhead (manyTill anyChar eof)
-  (Nothing) → pure 0
-
-delimeterAndCount ∷ Stream s m Char ⇒ ParsecT s u m (Delimeter, Int)
-delimeterAndCount = bisequence (delimeter, delimeter >>= delimeterCount)
-
 untilChar ∷ Stream s m Char ⇒ Char → ParsecT s u m String
 untilChar α = try $ manyTill anyChar (lookAhead $ char α)
 
@@ -44,6 +33,17 @@ includingChar α = liftA2 snoc (untilChar α) anyChar
 
 untilEof ∷ Stream s m Char ⇒ ParsecT s u m String
 untilEof = many1 anyChar
+
+delimeter ∷ Stream s m Char ⇒ ParsecT s u m Delimeter
+delimeter = Delimeter ⊙ optionMaybe (try $ lookAhead nextChar)
+
+delimeterCount ∷ Stream s m Char ⇒ Delimeter → ParsecT s u m Int
+delimeterCount α = case (getDelimeter α) of
+  (Just  ω) → (length . (filter (== ω))) ⊙ lookAhead untilEof
+  (Nothing) → pure 0
+
+delimeterAndCount ∷ Stream s m Char ⇒ ParsecT s u m (Delimeter, Int)
+delimeterAndCount = bisequence (delimeter, delimeter >>= delimeterCount)
 
 tagger ∷ Stream s m Char ⇒ Char → (String → EyeD3Tag) → ParsecT s u m Tagger
 tagger α ω = char α $> Tagger ω

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ffc4185f2ab615d96518e720c9d5842906a4ada99ee0f7d2bd8c23741c7071c2
+-- hash: 49e81b9b53499fd3cb9084d8960c57363ada92311b48ba1971ad010aa561ba15
 
 name:           tagger
 version:        0.1.0.0
@@ -37,10 +37,8 @@ library
   default-extensions: ApplicativeDo FlexibleContexts GeneralizedNewtypeDeriving NamedFieldPuns NoImplicitPrelude OverloadedStrings RecordWildCards UnicodeSyntax
   build-depends:
       base >=4.7 && <5
-    , containers
+    , mtl
     , parsec
-    , protolude
-    , text
   default-language: Haskell2010
 
 executable tagger-exe
@@ -53,11 +51,9 @@ executable tagger-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , containers
+    , mtl
     , parsec
-    , protolude
     , tagger
-    , text
   default-language: Haskell2010
 
 test-suite tagger-test
@@ -71,9 +67,7 @@ test-suite tagger-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
-    , containers
+    , mtl
     , parsec
-    , protolude
     , tagger
-    , text
   default-language: Haskell2010

@@ -1,10 +1,6 @@
 module Main where
 
-import Protolude (IO, putStrLn)
-import Data.Text (Text, unpack)
+import Prelude (IO, putStrLn)
 
 main ∷ IO ()
-main = putStrLn (unpack x)
-
-x ∷ Text
-x = "x"
+main = putStrLn "x"

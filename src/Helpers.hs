@@ -1,7 +1,8 @@
 module Helpers ((◁), (◀), (⊙), (●), (◇), (≠), fork) where
 
-import Protolude (Bool, (.), (/=), (<=<), (<>), fmap)
+import Prelude (Bool, (.), (/=), (<>), fmap)
 import Control.Applicative (Alternative, Applicative, (<*>), liftA2)
+import Control.Monad ((<=<))
 
 fork :: Applicative f ⇒ (a → b → c) → f a → f b → f c
 fork = liftA2
