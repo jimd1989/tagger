@@ -20,9 +20,12 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/tagger#readme>
 
 dependencies:
+- async
 - base >= 4.7 && < 5
 - mtl
 - parsec
+- process
+- silently
 
 library:
   source-dirs: src
