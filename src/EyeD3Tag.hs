@@ -16,6 +16,8 @@ data EyeD3Tag = Artist       String
               | Title        String
               | Year         String
 
+-- This is stupid: revisit
+-- Just don't use `show` on Strings
 instance Show EyeD3Tag where
   show (Artist      α) = "-a " ◇ (show α) ◇ " "
   show (AlbumArtist α) = "-b " ◇ (show α) ◇ " "
@@ -26,7 +28,7 @@ instance Show EyeD3Tag where
   show (Title       α) = "-t " ◇ (show α) ◇ " "
   show (Year        α) = "-Y " ◇ (filter (≠ '"') $ show α) ◇ " "
 
--- A newtype describing the constructor of an EyeD3Tag. Sits inside a Matcher
+-- A newtype describing the constructor of an EyeD3Tag. Sits inside a FileParser
 -- and is invoked on each filename to parse text into a proper ID3 tag.
 newtype Tagger = Tagger { runTagger ∷ String → EyeD3Tag }
 

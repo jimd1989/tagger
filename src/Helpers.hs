@@ -1,9 +1,10 @@
-module Helpers ((◁), (◀), (⊙), (●), (◇), (≠), fork, head') where
+module Helpers ((◁), (◀), (⊙), (●), (◇), (≠), fork, head', putStderr) where
 
 import Prelude (Bool, String, (.), ($), (/=), (<>), fmap)
 import Control.Applicative (Alternative, Applicative, (<*>), liftA2)
 import Control.Monad ((<=<))
 import Data.Either (Either(..))
+import System.IO (IO, hPutStrLn, stderr)
 
 head' ∷ [a] → Either String a
 head'   []  = Left "expected non-empty list"
@@ -11,6 +12,9 @@ head' (α:ω) = Right α
 
 fork :: Applicative f ⇒ (a → b → c) → f a → f b → f c
 fork = liftA2
+
+putStderr ∷ String → IO ()
+putStderr = hPutStrLn stderr
 
 -- Digraph Tl
 f ◁ g = fmap f . g
