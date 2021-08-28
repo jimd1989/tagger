@@ -1,4 +1,4 @@
-module Arguments where
+module Arguments (Arguments(..), arguments) where
 
 import Prelude (Either, IO, String, (.), show)
 import Control.Applicative (liftA2)

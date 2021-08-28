@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: a4a123b95b788a07738d32f694c577f82f9ca5525bc4eea9b6dd1c734944d4be
+-- hash: 6d83dc64bc1130a125a853897118e0361e07440331df515f67543c4e395ba178
 
 name:           tagger
 version:        0.1.0.0
@@ -41,6 +41,7 @@ library
       async
     , attoparsec
     , base >=4.7 && <5
+    , bytestring
     , errors
     , mtl
     , parsec
@@ -61,6 +62,7 @@ executable tagger-exe
       async
     , attoparsec
     , base >=4.7 && <5
+    , bytestring
     , errors
     , mtl
     , parsec
@@ -83,6 +85,7 @@ test-suite tagger-test
       async
     , attoparsec
     , base >=4.7 && <5
+    , bytestring
     , errors
     , mtl
     , parsec
