@@ -22,11 +22,13 @@ description:         Please see the README on GitHub at <https://github.com/gith
 dependencies:
 - async
 - base >= 4.7 && < 5
+- containers
 - mtl
 - parsec
 - posix-escape
 - process
 - silently
+- split
 
 library:
   source-dirs: src

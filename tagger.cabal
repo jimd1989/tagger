@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d66587e87934ed3f5a9900778e75e4e78f582772ea5f5976564e3766bdd615a9
+-- hash: b78c2f015bf5a886310d0b6f908ba22f4be3703799075d6d6d3fdc967add6d9e
 
 name:           tagger
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 
 library
   exposed-modules:
+      Capitalization
       EyeD3Tag
       Helpers
       Parser
@@ -39,11 +40,13 @@ library
   build-depends:
       async
     , base >=4.7 && <5
+    , containers
     , mtl
     , parsec
     , posix-escape
     , process
     , silently
+    , split
   default-language: Haskell2010
 
 executable tagger-exe
@@ -57,11 +60,13 @@ executable tagger-exe
   build-depends:
       async
     , base >=4.7 && <5
+    , containers
     , mtl
     , parsec
     , posix-escape
     , process
     , silently
+    , split
     , tagger
   default-language: Haskell2010
 
@@ -77,10 +82,12 @@ test-suite tagger-test
   build-depends:
       async
     , base >=4.7 && <5
+    , containers
     , mtl
     , parsec
     , posix-escape
     , process
     , silently
+    , split
     , tagger
   default-language: Haskell2010
