@@ -4,8 +4,8 @@ module EyeD3Tag where
 -- Each of its command-line flags has a corresponding instance in EyeD3Tag.
 
 import Prelude (Show, String, ($), show)
-import Data.List (filter)
-import Helpers ((◇), (≠))
+import System.Posix.Escape.Unicode (escape)
+import Helpers ((◇))
 
 data EyeD3Tag = Artist       String
               | AlbumArtist  String
@@ -19,14 +19,14 @@ data EyeD3Tag = Artist       String
 -- This is stupid: revisit
 -- Just don't use `show` on Strings
 instance Show EyeD3Tag where
-  show (Artist      α) = "-a " ◇ (show α) ◇ " "
-  show (AlbumArtist α) = "-b " ◇ (show α) ◇ " "
-  show (Album       α) = "-A " ◇ (show α) ◇ " "
-  show (DiscNum     α) = "-d " ◇ (filter (≠ '"') $ show α) ◇ " "
-  show (Genre       α) = "-G " ◇ (show α) ◇ " "
-  show (TrackNum    α) = "-n " ◇ (filter (≠ '"') $ show α) ◇ " "
-  show (Title       α) = "-t " ◇ (show α) ◇ " "
-  show (Year        α) = "-Y " ◇ (filter (≠ '"') $ show α) ◇ " "
+  show (Artist      α) = "-a " ◇ (escape α) ◇ " "
+  show (AlbumArtist α) = "-b " ◇ (escape α) ◇ " "
+  show (Album       α) = "-A " ◇ (escape α) ◇ " "
+  show (DiscNum     α) = "-d " ◇ α ◇ " "
+  show (Genre       α) = "-G " ◇ (escape α) ◇ " "
+  show (TrackNum    α) = "-n " ◇ α ◇ " "
+  show (Title       α) = "-t " ◇ (escape α) ◇ " "
+  show (Year        α) = "-Y " ◇ α ◇ " "
 
 -- A newtype describing the constructor of an EyeD3Tag. Sits inside a FileParser
 -- and is invoked on each filename to parse text into a proper ID3 tag.

@@ -1,11 +1,12 @@
 module Main where
 
-import Prelude (Either, IO, String, ($), (>>=), pure, putStrLn)
+import Prelude (Either, IO, String, (.), ($), (>>=), pure)
 import Control.Arrow ((|||))
+import Control.Monad (mapM_)
 import Control.Monad.Except (ExceptT(..), lift, liftEither, runExceptT)
 import Data.List (drop)
 import System.Environment (getArgs)
-import Helpers (head', putStderr)
+import Helpers ((⊙), head', putStderr)
 import Parser (fileParser)
 import TagFiles (tagFiles)
 
