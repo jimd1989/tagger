@@ -91,8 +91,8 @@ exactText = plaintext ⊙ untilTag
 
 textTag ∷ Stream s m Char ⇒ ParsecT s u m (ParsecT s u m String)
 textTag = check *> liftA2 (uncurry . text) choices delimiterAndCount'
-  where chars        = "abAGt"
-        constructors = [Artist, AlbumArtist, Album, Genre, Title]
+  where chars        = "abAGtx"
+        constructors = [Artist, AlbumArtist, Album, Genre, Title, Delete]
         check        = lookAhead $ oneOf chars
         choices      = choice $ zipWith tagger chars constructors
 

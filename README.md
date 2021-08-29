@@ -22,6 +22,7 @@ where `format-string` is a string containing both plaintext and the following ta
 + `{d}`: Disc number
 + `{n}`: Track number
 + `{Y}`: Year
++ `{x}`: Matches dynamic text, then discards it
 
 and `files` are the mp3 files to be tagged. Usually these are globbed as `*.mp3`, `**/*.mp3`, etc.
 

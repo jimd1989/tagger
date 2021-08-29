@@ -16,6 +16,7 @@ data EyeD3Tag = Artist       String
               | TrackNum     String
               | Title        String
               | Year         String
+              | Delete       String
 
 -- This is stupid: revisit
 -- Just don't use `show` on Strings
@@ -28,6 +29,7 @@ instance Show EyeD3Tag where
   show (TrackNum    α) = "-n " ◇ α ◇ " "
   show (Title       α) = "-t " ◇ (escape $ normalize α) ◇ " "
   show (Year        α) = "-Y " ◇ α ◇ " "
+  show (Delete      α) = ""
 
 -- A newtype describing the constructor of an EyeD3Tag. Sits inside a FileParser
 -- and is invoked on each filename to parse text into a proper ID3 tag.
