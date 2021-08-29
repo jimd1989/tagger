@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b78c2f015bf5a886310d0b6f908ba22f4be3703799075d6d6d3fdc967add6d9e
+-- hash: 9571b8da0710438dc2c5835a91019ee67a6e231a9933a0aacc877d8cedffad17
 
 name:           tagger
 version:        0.1.0.0
@@ -27,8 +27,8 @@ source-repository head
 
 library
   exposed-modules:
-      Capitalization
       EyeD3Tag
+      Format
       Helpers
       Parser
       TagFiles

@@ -19,6 +19,7 @@ import Text.Parsec.Char (anyChar, char, digit, oneOf, string)
 import Text.Parsec.Combinator (between, choice, count, lookAhead, optionMaybe)
 import EyeD3Tag (EyeD3Tag(..), Tagger(..), getTag)
 import Helpers ((⊙), (◇), fork)
+import Format (replace)
 
 newtype Delimiter = Delimiter { getDelimiter ∷ Maybe String }
 
@@ -61,8 +62,13 @@ delimiterCount α = case (getDelimiter α) of
 delimiterAndCount ∷ Stream s m Char ⇒ ParsecT s u m (Delimiter, Int)
 delimiterAndCount = bisequence (delimiter, delimiter >>= delimiterCount)
 
+replacer ∷ Stream s m Char ⇒ (String → EyeD3Tag) → ParsecT s u m Tagger
+replacer f = replacePattern ⊙ untilChar '}'
+  where replacePattern "" = Tagger (f . replace " ")
+        replacePattern α  = Tagger (f . replace α)
+
 tagger ∷ Stream s m Char ⇒ Char → (String → EyeD3Tag) → ParsecT s u m Tagger
-tagger α ω = char α $> Tagger ω
+tagger α f = char α *> replacer f
 
 -- Format string parsers
 exactText ∷ Stream s m Char ⇒ ParsecT s u m (ParsecT s u m String)

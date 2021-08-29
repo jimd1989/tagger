@@ -1,4 +1,4 @@
-module Capitalization (normalize) where
+module Format (normalize, replace) where
 
 import Prelude (String, (.), otherwise)
 import Data.Char (Char, toLower)
@@ -21,3 +21,6 @@ onWords f = intercalate " " . f . splitOn " "
 
 normalize ∷ String → String
 normalize = onWords (fork (◇) (take 1) (map checkCaps . drop 1))
+
+replace ∷ String → String → String
+replace α= intercalate " " . splitOn α

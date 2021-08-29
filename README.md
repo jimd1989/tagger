@@ -22,11 +22,11 @@ where `format-string` is a string containing both plaintext and the following ta
 + `{d}`: Disc number
 + `{n}`: Track number
 + `{Y}`: Year
-+ `{x}`: Matches dynamic text, then discards it
++ `{x}`: Matches text, then discards it
 
 and `files` are the mp3 files to be tagged. Usually these are globbed as `*.mp3`, `**/*.mp3`, etc.
 
-## Example
+## Simple Example
 
 Files
 
@@ -51,6 +51,29 @@ tagger "UPLOADED BY PAOLO COOLZONE.BR.RU {n}.{t}.mp3" *.mp3
 ```
 
 The spam will be ignored, and the relevant tags extracted.
+
+## Advanced example
+
+The `{x}` matcher will discard any pattern it covers. This is useful for ignoring dynamic text, but can also serve as a shorthand for dropping literal strings.
+
+For textual field matchers such as `{a}` or `{t}`, any text provided after the letter but within the matcher will be replaced by whitespace. `{a-}`, for example, will interpret `Nurse-with-Wound` as the artist name `Nurse with Wound`.
+
+Files
+
+```
+Contemporary-Polish-Music_01_Krzysztof-Penderecki_To-the-Victims-of-Hiroshima.mp3
+Contemporary-Polish-Music_02_Grazyna-Bacewicz_Music-for-Strings-Trumpets-and-Percussion.mp3
+Contemporary-Polish-Music_03_Tadeusz-Baird_Erotica.mp3
+Contemporary-Polish-Music_04_Kazimierz-Serocki_Sinfonietta-for-Two-String-Orchestras.mp3
+```
+
+Command
+
+```
+tagger "{A-}_{n}_{a-}_{t-}.mp3" *.mp3
+```
+
+The dashes are no problem. This pattern can be longer than one character, of course.
 
 ## Caveats
 

@@ -5,7 +5,7 @@ module EyeD3Tag (EyeD3Tag(..), Tagger(..), getTag) where
 
 import Prelude (Show, String, ($), show)
 import System.Posix.Escape.Unicode (escape)
-import Capitalization (normalize)
+import Format (normalize)
 import Helpers ((◇))
 
 data EyeD3Tag = Artist       String
